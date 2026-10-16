@@ -1,0 +1,31 @@
+name: CI Workflow
+
+# 1. Define when the workflow should run
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+# 2. Define what jobs to run
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out your repository code onto the runner
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Set up Node.js environment (change version/language as needed)
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    # Run installation and testing commands
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
