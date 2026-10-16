@@ -1,41 +1,22 @@
-name: Build Docker Image
+name: Docker Build
 
 on:
   push:
     branches:
       - main
 
+  workflow_dispatch:
+
 jobs:
-  docker-build:
-    name: Install Docker and Build Image
+  build:
     runs-on: ubuntu-latest
 
     steps:
-     
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      
-      - name: Install Docker if needed
-        run: |
-          if ! command -v docker >/dev/null 2>&1; then
-            sudo apt-get update
-            sudo apt-get install -y docker.io
-          fi
+      - name: Check Dockerfile
+        run: ls -la
 
-      
-      - name: Verify Docker version
-        run: |
-          docker --version
-          docker info
-
-     
-      - name: Build Docker image
-        run: |
-          docker build -t my-app:${GITHUB_SHA} .
-
-      
-      - name: Verify Docker image
-        run: |
-          docker image inspect my-app:${GITHUB_SHA}
-          docker images my-app
+      - name: Build Docker Image
+        run: docker build -t my-app:${GITHUB_SHA} 
